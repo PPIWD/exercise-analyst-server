@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
 using API.Infrastructure.Services.MeasurementsDev;
 using API.Infrastructure.Services.MeasurementsDev.Dtos.Requests;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,10 @@ namespace API.Controllers
         {
             var result = await _measurementsDevService.CreateMeasurementAsync(request);
 
-            return Ok("Gites");
+            if (result.Item1 == HttpStatusCode.Created)
+                return Created("", "");
+
+            return BadRequest(result.Item2);
         }
     }
 }

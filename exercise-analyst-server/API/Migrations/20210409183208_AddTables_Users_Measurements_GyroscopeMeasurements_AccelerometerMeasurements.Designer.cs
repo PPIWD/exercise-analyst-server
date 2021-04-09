@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210409175439_AddTables_Users_Measurements_GyroscopeMeasurements_AccelerometerMeasurements")]
+    [Migration("20210409183208_AddTables_Users_Measurements_GyroscopeMeasurements_AccelerometerMeasurements")]
     partial class AddTables_Users_Measurements_GyroscopeMeasurements_AccelerometerMeasurements
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,12 +23,16 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Domain.Models.AccelerometerMeasurement", b =>
                 {
-                    b.Property<decimal>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(20,0)");
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<long>("MeasurementId")
                         .HasColumnType("bigint");
+
+                    b.Property<int?>("MeasurementId1")
+                        .HasColumnType("int");
 
                     b.Property<int>("MeasurementIdFromMobile")
                         .HasColumnType("int");
@@ -50,7 +54,7 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MeasurementId");
+                    b.HasIndex("MeasurementId1");
 
                     b.ToTable("AccelerometerMeasurements");
                 });
@@ -135,12 +139,16 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Domain.Models.GyroscopeMeasurement", b =>
                 {
-                    b.Property<decimal>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(20,0)");
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<long>("MeasurementId")
                         .HasColumnType("bigint");
+
+                    b.Property<int?>("MeasurementId1")
+                        .HasColumnType("int");
 
                     b.Property<int>("MeasurementIdFromMobile")
                         .HasColumnType("int");
@@ -162,16 +170,17 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MeasurementId");
+                    b.HasIndex("MeasurementId1");
 
                     b.ToTable("GyroscopeMeasurements");
                 });
 
             modelBuilder.Entity("API.Domain.Models.Measurement", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Activity")
                         .HasColumnType("nvarchar(100)")
@@ -323,18 +332,14 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Domain.Models.Measurement", "Measurement")
                         .WithMany("AccelerometerMeasurements")
-                        .HasForeignKey("MeasurementId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MeasurementId1");
                 });
 
             modelBuilder.Entity("API.Domain.Models.GyroscopeMeasurement", b =>
                 {
                     b.HasOne("API.Domain.Models.Measurement", "Measurement")
                         .WithMany("GyroscopeMeasurements")
-                        .HasForeignKey("MeasurementId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MeasurementId1");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

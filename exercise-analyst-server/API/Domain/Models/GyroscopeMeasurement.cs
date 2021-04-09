@@ -4,7 +4,7 @@ namespace API.Domain.Models
 {
     public class GyroscopeMeasurement
     {
-        public ulong Id { get; set; }
+        public long Id { get; set; }
 
         public int MeasurementIdFromMobile { get; set; }
 

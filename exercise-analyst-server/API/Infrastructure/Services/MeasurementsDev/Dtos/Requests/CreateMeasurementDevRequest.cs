@@ -12,7 +12,7 @@ namespace API.Infrastructure.Services.MeasurementsDev.Dtos.Requests
     public class SessionEntity
     {
         public string Activity { get; set; }
-        public int Id { get; set; }
+        public long Id { get; set; }
         public int Repetitions { get; set; }
     }
 

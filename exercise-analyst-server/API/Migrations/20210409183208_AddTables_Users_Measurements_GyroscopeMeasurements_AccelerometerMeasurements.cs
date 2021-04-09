@@ -53,7 +53,8 @@ namespace API.Migrations
                 name: "Measurements",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Activity = table.Column<string>(maxLength: 100, nullable: true),
                     IdFromMobile = table.Column<int>(nullable: false),
                     Repetitions = table.Column<int>(nullable: false)
@@ -173,54 +174,58 @@ namespace API.Migrations
                 name: "AccelerometerMeasurements",
                 columns: table => new
                 {
-                    Id = table.Column<decimal>(nullable: false),
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     MeasurementIdFromMobile = table.Column<int>(nullable: false),
                     SessionIdFromMobile = table.Column<int>(nullable: false),
                     TimestampUtc = table.Column<long>(nullable: false),
                     X = table.Column<decimal>(type: "decimal(12,4)", nullable: false),
                     Y = table.Column<decimal>(type: "decimal(12,4)", nullable: false),
                     Z = table.Column<decimal>(type: "decimal(12,4)", nullable: false),
-                    MeasurementId = table.Column<long>(nullable: false)
+                    MeasurementId = table.Column<long>(nullable: false),
+                    MeasurementId1 = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AccelerometerMeasurements", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AccelerometerMeasurements_Measurements_MeasurementId",
-                        column: x => x.MeasurementId,
+                        name: "FK_AccelerometerMeasurements_Measurements_MeasurementId1",
+                        column: x => x.MeasurementId1,
                         principalTable: "Measurements",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "GyroscopeMeasurements",
                 columns: table => new
                 {
-                    Id = table.Column<decimal>(nullable: false),
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     MeasurementIdFromMobile = table.Column<int>(nullable: false),
                     SessionIdFromMobile = table.Column<int>(nullable: false),
                     TimestampUtc = table.Column<long>(nullable: false),
                     X = table.Column<decimal>(type: "decimal(12,4)", nullable: false),
                     Y = table.Column<decimal>(type: "decimal(12,4)", nullable: false),
                     Z = table.Column<decimal>(type: "decimal(12,4)", nullable: false),
-                    MeasurementId = table.Column<long>(nullable: false)
+                    MeasurementId = table.Column<long>(nullable: false),
+                    MeasurementId1 = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GyroscopeMeasurements", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GyroscopeMeasurements_Measurements_MeasurementId",
-                        column: x => x.MeasurementId,
+                        name: "FK_GyroscopeMeasurements_Measurements_MeasurementId1",
+                        column: x => x.MeasurementId1,
                         principalTable: "Measurements",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AccelerometerMeasurements_MeasurementId",
+                name: "IX_AccelerometerMeasurements_MeasurementId1",
                 table: "AccelerometerMeasurements",
-                column: "MeasurementId");
+                column: "MeasurementId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -262,9 +267,9 @@ namespace API.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GyroscopeMeasurements_MeasurementId",
+                name: "IX_GyroscopeMeasurements_MeasurementId1",
                 table: "GyroscopeMeasurements",
-                column: "MeasurementId");
+                column: "MeasurementId1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

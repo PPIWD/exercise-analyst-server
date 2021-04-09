@@ -5,7 +5,7 @@ namespace API.Domain.Models
 {
     public class Measurement
     {
-        public uint Id { get; set; }
+        public int Id { get; set; }
 
         [MaxLength(100)]
         public string Activity { get; set; }
