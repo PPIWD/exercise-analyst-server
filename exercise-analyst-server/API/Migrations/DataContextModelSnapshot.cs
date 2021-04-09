@@ -4,6 +4,7 @@ using API.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Migrations
 {
@@ -25,10 +26,7 @@ namespace API.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long>("MeasurementId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int?>("MeasurementId1")
+                    b.Property<int>("MeasurementId")
                         .HasColumnType("int");
 
                     b.Property<int>("MeasurementIdFromMobile")
@@ -51,7 +49,7 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MeasurementId1");
+                    b.HasIndex("MeasurementId");
 
                     b.ToTable("AccelerometerMeasurements");
                 });
@@ -141,10 +139,7 @@ namespace API.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long>("MeasurementId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int?>("MeasurementId1")
+                    b.Property<int>("MeasurementId")
                         .HasColumnType("int");
 
                     b.Property<int>("MeasurementIdFromMobile")
@@ -167,7 +162,7 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MeasurementId1");
+                    b.HasIndex("MeasurementId");
 
                     b.ToTable("GyroscopeMeasurements");
                 });
@@ -329,14 +324,18 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Domain.Models.Measurement", "Measurement")
                         .WithMany("AccelerometerMeasurements")
-                        .HasForeignKey("MeasurementId1");
+                        .HasForeignKey("MeasurementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("API.Domain.Models.GyroscopeMeasurement", b =>
                 {
                     b.HasOne("API.Domain.Models.Measurement", "Measurement")
                         .WithMany("GyroscopeMeasurements")
-                        .HasForeignKey("MeasurementId1");
+                        .HasForeignKey("MeasurementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

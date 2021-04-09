@@ -182,18 +182,17 @@ namespace API.Migrations
                     X = table.Column<decimal>(type: "decimal(12,4)", nullable: false),
                     Y = table.Column<decimal>(type: "decimal(12,4)", nullable: false),
                     Z = table.Column<decimal>(type: "decimal(12,4)", nullable: false),
-                    MeasurementId = table.Column<long>(nullable: false),
-                    MeasurementId1 = table.Column<int>(nullable: true)
+                    MeasurementId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AccelerometerMeasurements", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AccelerometerMeasurements_Measurements_MeasurementId1",
-                        column: x => x.MeasurementId1,
+                        name: "FK_AccelerometerMeasurements_Measurements_MeasurementId",
+                        column: x => x.MeasurementId,
                         principalTable: "Measurements",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -208,24 +207,23 @@ namespace API.Migrations
                     X = table.Column<decimal>(type: "decimal(12,4)", nullable: false),
                     Y = table.Column<decimal>(type: "decimal(12,4)", nullable: false),
                     Z = table.Column<decimal>(type: "decimal(12,4)", nullable: false),
-                    MeasurementId = table.Column<long>(nullable: false),
-                    MeasurementId1 = table.Column<int>(nullable: true)
+                    MeasurementId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GyroscopeMeasurements", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GyroscopeMeasurements_Measurements_MeasurementId1",
-                        column: x => x.MeasurementId1,
+                        name: "FK_GyroscopeMeasurements_Measurements_MeasurementId",
+                        column: x => x.MeasurementId,
                         principalTable: "Measurements",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AccelerometerMeasurements_MeasurementId1",
+                name: "IX_AccelerometerMeasurements_MeasurementId",
                 table: "AccelerometerMeasurements",
-                column: "MeasurementId1");
+                column: "MeasurementId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -267,9 +265,9 @@ namespace API.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GyroscopeMeasurements_MeasurementId1",
+                name: "IX_GyroscopeMeasurements_MeasurementId",
                 table: "GyroscopeMeasurements",
-                column: "MeasurementId1");
+                column: "MeasurementId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
