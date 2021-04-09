@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using API.Dtos.Measurements.Requests;
+using API.Infrastructure.Services.MeasurementsDev.Dtos.Requests;
 using Microsoft.AspNetCore.Http;
 
 namespace API.Infrastructure.Services.MeasurementsDev

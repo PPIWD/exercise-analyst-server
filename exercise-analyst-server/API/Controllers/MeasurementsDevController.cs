@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using API.Dtos.Measurements.Requests;
 using API.Infrastructure.Services.MeasurementsDev;
+using API.Infrastructure.Services.MeasurementsDev.Dtos.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace API.Dtos.Measurements.Requests
+namespace API.Infrastructure.Services.MeasurementsDev.Dtos.Requests
 {
     public class CreateMeasurementDevRequest
     {
