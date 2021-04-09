@@ -4,7 +4,6 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using API.Domain.Models;
-using API.Infrastructure;
 using API.Infrastructure.AutoMapper;
 using API.Infrastructure.Services.MeasurementsDev;
 using API.Persistence;

@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using API.Infrastructure.Services.MeasurementsDev;
 using API.Infrastructure.Services.MeasurementsDev.Dtos.Requests;
@@ -20,12 +21,12 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateMeasurementDev([FromBody] CreateMeasurementDevRequest request)
         {
-            var result = await _measurementsDevService.CreateMeasurementAsync(request);
+            var (httpStatusCode, message) = await _measurementsDevService.CreateMeasurementAsync(request);
 
-            if (result.Item1 == HttpStatusCode.Created)
+            if (httpStatusCode == HttpStatusCode.Created)
                 return Created("", "");
 
-            return BadRequest(result.Item2);
+            return BadRequest(message);
         }
     }
 }

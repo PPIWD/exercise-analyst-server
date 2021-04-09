@@ -5,7 +5,6 @@ using API.Domain.Models;
 using API.Infrastructure.Services.MeasurementsDev.Dtos.Requests;
 using API.Persistence;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 
 namespace API.Infrastructure.Services.MeasurementsDev
 {
