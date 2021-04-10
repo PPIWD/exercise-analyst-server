@@ -6,7 +6,9 @@ using System.Text.Json.Serialization;
 using API.Domain.Models;
 using API.Infrastructure;
 using API.Infrastructure.AutoMapper;
+using API.Infrastructure.Jwt;
 using API.Persistence;
+using API.Services.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -49,6 +51,9 @@ namespace API
             
             services.AddAutoMapper(c => c.AddProfile<AutoMapperProfile>(),
                 typeof(Startup));
+
+            services.AddTransient<IJwtGenerator, JwtGenerator>();
+            services.AddTransient<IAuthService, AuthService>();
             
             services.AddCors(options =>
             {
