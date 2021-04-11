@@ -6,6 +6,7 @@ using API.Domain.Models;
 using API.Infrastructure.Jwt;
 using API.Services.Auth.Dtos;
 using API.Services.Common;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 
 namespace API.Services.Auth
@@ -15,12 +16,14 @@ namespace API.Services.Auth
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IJwtGenerator _jwtGenerator;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMapper _mapper;
 
-        public AuthService(SignInManager<ApplicationUser> signInManager, IJwtGenerator jwtGenerator, UserManager<ApplicationUser> userManager)
+        public AuthService(SignInManager<ApplicationUser> signInManager, IJwtGenerator jwtGenerator, UserManager<ApplicationUser> userManager, IMapper mapper)
         {
             _signInManager = signInManager;
             _jwtGenerator = jwtGenerator;
             _userManager = userManager;
+            _mapper = mapper;
         }
         public async Task<Response<LoginResponse>> LoginAsync(LoginRequest request)
         {
@@ -31,7 +34,7 @@ namespace API.Services.Auth
                 return new Response<LoginResponse>
                 {
                     HttpStatusCode = HttpStatusCode.Unauthorized,
-                    Errors = new[] {"Nieprawidłowy email lub hasło"}
+                    Errors = new[] {"Invalid email or password"}
                 };
             }
 
@@ -41,15 +44,19 @@ namespace API.Services.Auth
                 return new Response<LoginResponse>
                 {
                     HttpStatusCode = HttpStatusCode.Unauthorized,
-                    Errors = new[] {"Nieprawidłowy email lub hasło"}
+                    Errors = new[] {"Invalid email or password"}
                 };
             }
             
             var accessToken = await _jwtGenerator.CreateTokenAsync(user);
             var response = new LoginResponse
             {
-                AccessToken = accessToken
+                AccessToken = accessToken,
+                Roles = await _userManager.GetRolesAsync(user)
             };
+            
+            _mapper.Map(user, response);
+            
             return new Response<LoginResponse>
             {
                 HttpStatusCode = HttpStatusCode.OK,
@@ -76,7 +83,7 @@ namespace API.Services.Auth
                 return new Response<RegisterResponse>
                 {
                     HttpStatusCode = HttpStatusCode.BadRequest,
-                    Errors = new[] {"Adres email jest już zajęty"}
+                    Errors = new[] {"Provided email is already taken"}
                 };
             }
 
@@ -104,8 +111,14 @@ namespace API.Services.Auth
             
             var response = new RegisterResponse
             {
-                AccessToken = accessToken
+                AccessToken = accessToken,
+                Roles = new []
+                {
+                    Role.User
+                }
             };
+
+            _mapper.Map(userToRegister, response);
 
             return new Response<RegisterResponse>
             {

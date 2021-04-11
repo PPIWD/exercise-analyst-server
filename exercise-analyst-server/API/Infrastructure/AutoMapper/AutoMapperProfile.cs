@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using API.Domain.Models;
+using API.Services.Auth.Dtos;
+using AutoMapper;
 
 namespace API.Infrastructure.AutoMapper
 {
@@ -6,7 +8,14 @@ namespace API.Infrastructure.AutoMapper
     {
         public AutoMapperProfile()
         {
+            MapsForAuth();
+        }
+
+        private void MapsForAuth()
+        {
+            CreateMap<ApplicationUser, LoginResponse>();
             
+            CreateMap<ApplicationUser, RegisterResponse>();
         }
     }
 }
