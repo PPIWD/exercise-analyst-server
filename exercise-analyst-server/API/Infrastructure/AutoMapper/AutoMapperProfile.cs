@@ -1,5 +1,6 @@
 ﻿using API.Domain.Models;
 using API.Infrastructure.Services.MeasurementsDev.Dtos.Requests;
+using API.Services.Auth.Dtos;
 using AutoMapper;
 
 namespace API.Infrastructure.AutoMapper
@@ -9,6 +10,7 @@ namespace API.Infrastructure.AutoMapper
         public AutoMapperProfile()
         {
             MapsForMeasurementsDev();
+            MapsForAuth();
         }
 
         private void MapsForMeasurementsDev()
@@ -99,7 +101,14 @@ namespace API.Infrastructure.AutoMapper
                 //Session.Id->IdFromMobile
                 .ForMember(mes => mes.IdFromMobile,
                     opt => opt
-                        .MapFrom(mesDto => mesDto.SessionEntity.Id));
+                        .MapFrom(mesDto => mesDto.SessionEntity.Id)); 
+        }
+        
+
+        private void MapsForAuth()
+        {
+            CreateMap<ApplicationUser, LoginResponse>();
+            CreateMap<ApplicationUser, RegisterResponse>();
         }
     }
 }

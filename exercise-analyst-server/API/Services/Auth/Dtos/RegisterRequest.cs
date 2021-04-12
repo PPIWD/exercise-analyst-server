@@ -1,12 +1,16 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using API.Services.Common;
-using Microsoft.AspNetCore.Identity;
 
-namespace API.Domain.Models
+namespace API.Services.Auth.Dtos
 {
-    public class ApplicationUser: IdentityUser
+    public class RegisterRequest
     {
+        [Required, MaxLength(255)]
+        public string Password { get; set; }
+        
+        [Required, EmailAddress, MaxLength(255)]
+        public string Email { get; set; }
+
         [Range(50, 250)]
         public int HeightInCm { get; set; }
         
@@ -18,7 +22,5 @@ namespace API.Domain.Models
         
         [Required]
         public Gender Gender { get; set; }
-        
-        public DateTime CreatedAtUTC { get; set; }
     }
 }
