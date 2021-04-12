@@ -18,16 +18,12 @@ namespace API.Services.MeasurementsDev.Dtos.Requests
 
     public class GyroscopeMeasEntity
     {
-        public int MeasurementId { get; set; }
-        public int SessionId { get; set; }
         public long TimestampUtc { get; set; }
         public Vector Vector { get; set; }
     }
 
     public class AccelerometerMeasEntity
     {
-        public int MeasurementId { get; set; }
-        public int SessionId { get; set; }
         public long TimestampUtc { get; set; }
         public Vector Vector { get; set; }
     }

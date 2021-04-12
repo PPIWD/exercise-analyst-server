@@ -6,10 +6,6 @@ namespace API.Domain.Models
     {
         public long Id { get; set; }
 
-        public int MeasurementIdFromMobile { get; set; }
-
-        public int SessionIdFromMobile { get; set; }
-
         public long TimestampUtc { get; set; }
 
         [Column(TypeName = "decimal(12,4)")]

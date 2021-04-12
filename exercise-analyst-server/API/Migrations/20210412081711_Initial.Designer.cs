@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210409192657_AddTables_Users_Measurements_GyroscopeMeasurements_AccelerometerMeasurements")]
-    partial class AddTables_Users_Measurements_GyroscopeMeasurements_AccelerometerMeasurements
+    [Migration("20210412081711_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,12 +29,6 @@ namespace API.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("MeasurementId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MeasurementIdFromMobile")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SessionIdFromMobile")
                         .HasColumnType("int");
 
                     b.Property<long>("TimestampUtc")
@@ -64,6 +58,9 @@ namespace API.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -78,15 +75,11 @@ namespace API.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                    b.Property<int>("HeightInCm")
+                        .HasColumnType("int");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -121,6 +114,9 @@ namespace API.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
+                    b.Property<double>("WeightInKg")
+                        .HasColumnType("float");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -142,12 +138,6 @@ namespace API.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("MeasurementId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MeasurementIdFromMobile")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SessionIdFromMobile")
                         .HasColumnType("int");
 
                     b.Property<long>("TimestampUtc")
@@ -216,6 +206,15 @@ namespace API.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "5c5e174e-3b0e-446f-86af-483d56fd7210",
+                            ConcurrencyStamp = "9fca885a-a6ea-4e3d-b2a0-088e207f9920",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

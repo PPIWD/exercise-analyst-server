@@ -20,16 +20,6 @@ namespace API.Infrastructure.AutoMapper
                 .ForMember(acc => acc.MeasurementId,
                     opt => opt.Ignore())
 
-                //MeasurementId->MeasurementIdFromMobile
-                .ForMember(acc => acc.MeasurementIdFromMobile,
-                    opt => opt
-                        .MapFrom(accDto => accDto.MeasurementId))
-
-                //SessionId->SessionIdFromMobile
-                .ForMember(acc => acc.SessionIdFromMobile,
-                    opt => opt
-                        .MapFrom(accDto => accDto.SessionId))
-
                 //Vector.X->X
                 .ForMember(acc => acc.X,
                     opt => opt
@@ -46,21 +36,10 @@ namespace API.Infrastructure.AutoMapper
                         .MapFrom(accDto => accDto.Vector.Z));
 
 
-
             CreateMap<GyroscopeMeasEntity, GyroscopeMeasurement>()
                 //IGNORE MeasurementId->MeasurementId
                 .ForMember(gyro => gyro.MeasurementId,
                     opt => opt.Ignore())
-
-                //MeasurementId->MeasurementIdFromMobile
-                .ForMember(gyro => gyro.MeasurementIdFromMobile,
-                    opt => opt
-                        .MapFrom(gyroDto => gyroDto.MeasurementId))
-
-                //SessionId->SessionIdFromMobile
-                .ForMember(gyro => gyro.SessionIdFromMobile,
-                    opt => opt
-                        .MapFrom(gyroDto => gyroDto.SessionId))
 
                 //Vector.X->X
                 .ForMember(gyro => gyro.X,
@@ -101,9 +80,9 @@ namespace API.Infrastructure.AutoMapper
                 //Session.Id->IdFromMobile
                 .ForMember(mes => mes.IdFromMobile,
                     opt => opt
-                        .MapFrom(mesDto => mesDto.SessionEntity.Id)); 
+                        .MapFrom(mesDto => mesDto.SessionEntity.Id));
         }
-        
+
 
         private void MapsForAuth()
         {

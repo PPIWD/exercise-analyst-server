@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API.Migrations
 {
-    public partial class AddTables_Users_Measurements_GyroscopeMeasurements_AccelerometerMeasurements : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,8 +40,10 @@ namespace API.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    FirstName = table.Column<string>(maxLength: 255, nullable: false),
-                    LastName = table.Column<string>(maxLength: 255, nullable: false),
+                    HeightInCm = table.Column<int>(nullable: false),
+                    WeightInKg = table.Column<double>(nullable: false),
+                    Age = table.Column<int>(nullable: false),
+                    Gender = table.Column<int>(nullable: false),
                     CreatedAtUTC = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -176,8 +178,6 @@ namespace API.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MeasurementIdFromMobile = table.Column<int>(nullable: false),
-                    SessionIdFromMobile = table.Column<int>(nullable: false),
                     TimestampUtc = table.Column<long>(nullable: false),
                     X = table.Column<decimal>(type: "decimal(12,4)", nullable: false),
                     Y = table.Column<decimal>(type: "decimal(12,4)", nullable: false),
@@ -201,8 +201,6 @@ namespace API.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MeasurementIdFromMobile = table.Column<int>(nullable: false),
-                    SessionIdFromMobile = table.Column<int>(nullable: false),
                     TimestampUtc = table.Column<long>(nullable: false),
                     X = table.Column<decimal>(type: "decimal(12,4)", nullable: false),
                     Y = table.Column<decimal>(type: "decimal(12,4)", nullable: false),
@@ -219,6 +217,11 @@ namespace API.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "5c5e174e-3b0e-446f-86af-483d56fd7210", "9fca885a-a6ea-4e3d-b2a0-088e207f9920", "User", "USER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AccelerometerMeasurements_MeasurementId",
