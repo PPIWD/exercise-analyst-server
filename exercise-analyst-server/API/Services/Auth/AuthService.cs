@@ -47,16 +47,16 @@ namespace API.Services.Auth
                     Errors = new[] {"Invalid email or password"}
                 };
             }
-            
+
             var accessToken = await _jwtGenerator.CreateTokenAsync(user);
             var response = new LoginResponse
             {
                 AccessToken = accessToken,
                 Roles = await _userManager.GetRolesAsync(user)
             };
-            
+
             _mapper.Map(user, response);
-            
+
             return new Response<LoginResponse>
             {
                 HttpStatusCode = HttpStatusCode.OK,
@@ -108,7 +108,7 @@ namespace API.Services.Auth
             }
 
             var accessToken = await _jwtGenerator.CreateTokenAsync(userToRegister);
-            
+
             var response = new RegisterResponse
             {
                 AccessToken = accessToken,
