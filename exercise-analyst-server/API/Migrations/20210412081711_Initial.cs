@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API.Migrations
 {
-    public partial class Init : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -49,6 +49,21 @@ namespace API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Measurements",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Activity = table.Column<string>(maxLength: 100, nullable: true),
+                    IdFromMobile = table.Column<int>(nullable: false),
+                    Repetitions = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Measurements", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -157,10 +172,61 @@ namespace API.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "AccelerometerMeasurements",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TimestampUtc = table.Column<long>(nullable: false),
+                    X = table.Column<decimal>(type: "decimal(12,4)", nullable: false),
+                    Y = table.Column<decimal>(type: "decimal(12,4)", nullable: false),
+                    Z = table.Column<decimal>(type: "decimal(12,4)", nullable: false),
+                    MeasurementId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccelerometerMeasurements", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AccelerometerMeasurements_Measurements_MeasurementId",
+                        column: x => x.MeasurementId,
+                        principalTable: "Measurements",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GyroscopeMeasurements",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TimestampUtc = table.Column<long>(nullable: false),
+                    X = table.Column<decimal>(type: "decimal(12,4)", nullable: false),
+                    Y = table.Column<decimal>(type: "decimal(12,4)", nullable: false),
+                    Z = table.Column<decimal>(type: "decimal(12,4)", nullable: false),
+                    MeasurementId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GyroscopeMeasurements", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GyroscopeMeasurements_Measurements_MeasurementId",
+                        column: x => x.MeasurementId,
+                        principalTable: "Measurements",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "5c5e174e-3b0e-446f-86af-483d56fd7210", "bce1395c-2146-4501-836f-f4f2f949cba7", "User", "USER" });
+                values: new object[] { "5c5e174e-3b0e-446f-86af-483d56fd7210", "9fca885a-a6ea-4e3d-b2a0-088e207f9920", "User", "USER" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AccelerometerMeasurements_MeasurementId",
+                table: "AccelerometerMeasurements",
+                column: "MeasurementId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -200,10 +266,18 @@ namespace API.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GyroscopeMeasurements_MeasurementId",
+                table: "GyroscopeMeasurements",
+                column: "MeasurementId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AccelerometerMeasurements");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -220,10 +294,16 @@ namespace API.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "GyroscopeMeasurements");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Measurements");
         }
     }
 }

@@ -4,11 +4,11 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using API.Domain.Models;
-using API.Infrastructure;
 using API.Infrastructure.AutoMapper;
 using API.Infrastructure.Jwt;
 using API.Persistence;
 using API.Services.Auth;
+using API.Services.MeasurementsDev;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,12 +34,11 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
             services.AddDbContext<DataContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
-            
+
             services
                 .AddIdentity<ApplicationUser, IdentityRole>(opt =>
                 {
@@ -48,13 +47,15 @@ namespace API
                 .AddSignInManager<SignInManager<ApplicationUser>>()
                 .AddEntityFrameworkStores<DataContext>()
                 .AddDefaultTokenProviders();
-            
+
             services.AddAutoMapper(c => c.AddProfile<AutoMapperProfile>(),
                 typeof(Startup));
 
             services.AddTransient<IJwtGenerator, JwtGenerator>();
             services.AddTransient<IAuthService, AuthService>();
-            
+            services.AddTransient<IMeasurementsDevService, MeasurementsDevService>();
+
+
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
@@ -63,14 +64,14 @@ namespace API
                         .AllowAnyHeader()
                         .AllowCredentials());
             });
-            
+
             services.AddMvc(option => option.EnableEndpointRouting = false)
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
                 });
-            
+
             services.AddAuthentication(opt =>
                 {
                     opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -127,7 +128,7 @@ namespace API
                     }
                 });
             });
-            
+
             services.AddControllers();
         }
 
@@ -138,7 +139,7 @@ namespace API
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
             app.UseCors("CorsPolicy");
             app.UseSwagger();
             app.UseSwaggerUI(c =>

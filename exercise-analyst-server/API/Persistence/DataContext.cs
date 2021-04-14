@@ -11,7 +11,11 @@ namespace API.Persistence
         public DataContext(DbContextOptions options) : base(options)
         {
         }
-        
+
+        public DbSet<Measurement> Measurements { get; set; }
+        public DbSet<AccelerometerMeasurement> AccelerometerMeasurements { get; set; }
+        public DbSet<GyroscopeMeasurement> GyroscopeMeasurements { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);

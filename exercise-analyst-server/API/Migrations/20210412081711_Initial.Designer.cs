@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210410152829_Init")]
-    partial class Init
+    [Migration("20210412081711_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,35 @@ namespace API.Migrations
                 .HasAnnotation("ProductVersion", "3.1.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("API.Domain.Models.AccelerometerMeasurement", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("MeasurementId")
+                        .HasColumnType("int");
+
+                    b.Property<long>("TimestampUtc")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("X")
+                        .HasColumnType("decimal(12,4)");
+
+                    b.Property<decimal>("Y")
+                        .HasColumnType("decimal(12,4)");
+
+                    b.Property<decimal>("Z")
+                        .HasColumnType("decimal(12,4)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MeasurementId");
+
+                    b.ToTable("AccelerometerMeasurements");
+                });
 
             modelBuilder.Entity("API.Domain.Models.ApplicationUser", b =>
                 {
@@ -101,6 +130,57 @@ namespace API.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("API.Domain.Models.GyroscopeMeasurement", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("MeasurementId")
+                        .HasColumnType("int");
+
+                    b.Property<long>("TimestampUtc")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("X")
+                        .HasColumnType("decimal(12,4)");
+
+                    b.Property<decimal>("Y")
+                        .HasColumnType("decimal(12,4)");
+
+                    b.Property<decimal>("Z")
+                        .HasColumnType("decimal(12,4)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MeasurementId");
+
+                    b.ToTable("GyroscopeMeasurements");
+                });
+
+            modelBuilder.Entity("API.Domain.Models.Measurement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Activity")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("IdFromMobile")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Repetitions")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Measurements");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -131,7 +211,7 @@ namespace API.Migrations
                         new
                         {
                             Id = "5c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "bce1395c-2146-4501-836f-f4f2f949cba7",
+                            ConcurrencyStamp = "9fca885a-a6ea-4e3d-b2a0-088e207f9920",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -239,6 +319,24 @@ namespace API.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("API.Domain.Models.AccelerometerMeasurement", b =>
+                {
+                    b.HasOne("API.Domain.Models.Measurement", "Measurement")
+                        .WithMany("AccelerometerMeasurements")
+                        .HasForeignKey("MeasurementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("API.Domain.Models.GyroscopeMeasurement", b =>
+                {
+                    b.HasOne("API.Domain.Models.Measurement", "Measurement")
+                        .WithMany("GyroscopeMeasurements")
+                        .HasForeignKey("MeasurementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
