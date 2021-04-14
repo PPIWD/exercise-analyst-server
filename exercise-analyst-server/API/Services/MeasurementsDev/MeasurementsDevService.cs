@@ -28,7 +28,7 @@ namespace API.Services.MeasurementsDev
             var result = await _context.SaveChangesAsync();
 
             if(result > 0)
-                return new Response(HttpStatusCode.Created);
+                return new Response(HttpStatusCode.NoContent);
             return new Response(HttpStatusCode.BadRequest, new[] { "No data has been saved" });
         }
     }

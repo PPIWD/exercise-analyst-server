@@ -23,8 +23,8 @@ namespace API.Controllers
         {
             var response = await _measurementsDevService.CreateMeasurementAsync(request);
 
-            if (response.HttpStatusCode == HttpStatusCode.Created)
-                return Created("", "");
+            if (response.HttpStatusCode == HttpStatusCode.NoContent)
+                return NoContent();
 
             return BadRequest(response.Errors);
         }
