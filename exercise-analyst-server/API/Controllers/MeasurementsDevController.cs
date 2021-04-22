@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 using API.Services.MeasurementsDev;
 using API.Services.MeasurementsDev.Dtos.Requests;
@@ -25,6 +24,17 @@ namespace API.Controllers
 
             if (response.HttpStatusCode == HttpStatusCode.NoContent)
                 return NoContent();
+
+            return BadRequest(response.Errors);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetMeasurementsDevCsv()
+        {
+            var response = await _measurementsDevService.GetMeasurementsCsvAsync();
+            
+            if (response.HttpStatusCode == HttpStatusCode.OK)
+                return Ok(response);
 
             return BadRequest(response.Errors);
         }

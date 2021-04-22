@@ -1,11 +1,13 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 using API.Domain.Models;
 using API.Persistence;
 using API.Services.Common;
 using API.Services.MeasurementsDev.Dtos.Requests;
+using API.Services.MeasurementsDev.Dtos.Responses;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Services.MeasurementsDev
 {
@@ -30,6 +32,26 @@ namespace API.Services.MeasurementsDev
             if(result > 0)
                 return new Response(HttpStatusCode.NoContent);
             return new Response(HttpStatusCode.BadRequest, new[] { "No data has been saved" });
+        }
+        
+        public async Task<Response<GetMeasurementsCsvResponse>> GetMeasurementsCsvAsync()
+        {
+            var measurements = await _context.Measurements
+                .ProjectTo<MeasurementForGetMeasurementsCsvResponse>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+            
+            var payload = new GetMeasurementsCsvResponse
+            {
+                Measurements = measurements
+            };
+            
+            var response = new Response<GetMeasurementsCsvResponse>
+            {
+                HttpStatusCode = HttpStatusCode.OK,
+                Payload = payload
+            };
+            
+            return response;
         }
     }
 }
