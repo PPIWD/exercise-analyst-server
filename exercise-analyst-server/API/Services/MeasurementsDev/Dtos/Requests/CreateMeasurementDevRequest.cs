@@ -1,7 +1,14 @@
 using System.Collections.Generic;
 
-namespace API.Services.MeasurementsDev.Dtos
+namespace API.Services.MeasurementsDev.Dtos.Requests
 {
+    public class CreateMeasurementDevRequest
+    {
+        public ICollection<AccelerometerMeasEntity> AccelerometerMeasEntities { get; set; }
+        public ICollection<GyroscopeMeasEntity> GyroscopeMeasEntities { get; set; }
+        public SessionEntity SessionEntity { get; set; }
+    }
+
     public class SessionEntity
     {
         public string Activity { get; set; }

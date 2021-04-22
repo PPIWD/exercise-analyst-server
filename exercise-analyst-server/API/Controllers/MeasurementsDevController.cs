@@ -2,7 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using API.Services.MeasurementsDev;
-using API.Services.MeasurementsDev.Dtos;
+using API.Services.MeasurementsDev.Dtos.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -43,17 +43,6 @@ namespace API.Controllers
                 return Created($"api/measurements-dev/{response.Payload}",new {});
 
             return BadRequest(response.Errors);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetMeasurementDev([FromRoute] int id)
-        {
-            var response = await _measurementsDevService.GetMeasurementAsync(id);
-
-            if (response.HttpStatusCode == HttpStatusCode.OK)
-                return Ok(response);
-
-            return NotFound();
         }
     }
 }

@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 using API.Domain.Models;
 using API.Persistence;
 using API.Services.Common;
-using API.Services.MeasurementsDev.Dtos;
+using API.Services.MeasurementsDev.Dtos.Requests;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Services.MeasurementsDev
 {
@@ -35,22 +34,6 @@ namespace API.Services.MeasurementsDev
             return new Response<int>(){
                 HttpStatusCode = HttpStatusCode.BadRequest,
                 Errors = new[] { "No data has been saved" }
-            };
-        }
-
-        public async Task<Response<Measurement>> GetMeasurementAsync(int id)
-        {
-            var measurement = await _context.Measurements
-                .Include(x => x.AccelerometerMeasurements)
-                .Include(x => x.GyroscopeMeasurements)
-                .FirstOrDefaultAsync(x => x.Id == id);
-            if (measurement != null)
-                return new Response<Measurement>(){
-                    HttpStatusCode = HttpStatusCode.OK,
-                    Payload = measurement
-                };
-            return new Response<Measurement>(){
-                HttpStatusCode = HttpStatusCode.NotFound,
             };
         }
     }

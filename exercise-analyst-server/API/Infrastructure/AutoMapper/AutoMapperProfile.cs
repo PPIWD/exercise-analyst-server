@@ -1,6 +1,6 @@
 ﻿using API.Domain.Models;
 using API.Services.Auth.Dtos;
-using API.Services.MeasurementsDev.Dtos;
+using API.Services.MeasurementsDev.Dtos.Requests;
 using AutoMapper;
 
 namespace API.Infrastructure.AutoMapper
