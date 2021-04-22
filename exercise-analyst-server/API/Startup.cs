@@ -130,6 +130,14 @@ namespace API
             });
 
             services.AddControllers();
+            services.AddApiVersioning(
+                options =>
+                {
+                    options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1,0);
+                    options.AssumeDefaultVersionWhenUnspecified = true;
+                    // reporting api versions will return the headers "api-supported-versions" and "api-deprecated-versions"
+                    options.ReportApiVersions = true;
+                } );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -14,17 +14,6 @@ namespace API.Services.Common
 
     public class Response
     {
-        public Response(HttpStatusCode httpStatusCode)
-        {
-            HttpStatusCode = httpStatusCode;
-        }
-
-        public Response(HttpStatusCode httpStatusCode, IEnumerable<string> errors)
-        {
-            HttpStatusCode = httpStatusCode;
-            Errors = errors;
-        }
-
         [JsonIgnore]
         public HttpStatusCode HttpStatusCode { get; set; }
         public IEnumerable<string> Errors { get; set; }
