@@ -2,7 +2,7 @@
 
 namespace API.Services.MeasurementsDev.Dtos.Responses
 {
-    public class GetMeasurementsCsvResponse
+    public class GetMeasurementsResponse
     {
         public List<MeasurementForGetMeasurementsCsvResponse> Measurements { get; set; }
     }

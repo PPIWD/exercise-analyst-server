@@ -34,18 +34,18 @@ namespace API.Services.MeasurementsDev
             return new Response(HttpStatusCode.BadRequest, new[] { "No data has been saved" });
         }
         
-        public async Task<Response<GetMeasurementsCsvResponse>> GetMeasurementsCsvAsync()
+        public async Task<Response<GetMeasurementsResponse>> GetMeasurementsAsync()
         {
             var measurements = await _context.Measurements
                 .ProjectTo<MeasurementForGetMeasurementsCsvResponse>(_mapper.ConfigurationProvider)
                 .ToListAsync();
             
-            var payload = new GetMeasurementsCsvResponse
+            var payload = new GetMeasurementsResponse
             {
                 Measurements = measurements
             };
             
-            var response = new Response<GetMeasurementsCsvResponse>
+            var response = new Response<GetMeasurementsResponse>
             {
                 HttpStatusCode = HttpStatusCode.OK,
                 Payload = payload

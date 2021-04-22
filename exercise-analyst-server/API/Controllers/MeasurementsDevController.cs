@@ -29,9 +29,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetMeasurementsDevCsv()
+        public async Task<IActionResult> GetMeasurementsDev()
         {
-            var response = await _measurementsDevService.GetMeasurementsCsvAsync();
+            var response = await _measurementsDevService.GetMeasurementsAsync();
             
             if (response.HttpStatusCode == HttpStatusCode.OK)
                 return Ok(response);

@@ -8,6 +8,6 @@ namespace API.Services.MeasurementsDev
     public interface IMeasurementsDevService
     {
         Task<Response> CreateMeasurementAsync(CreateMeasurementDevRequest request);
-        Task<Response<GetMeasurementsCsvResponse>> GetMeasurementsCsvAsync();
+        Task<Response<GetMeasurementsResponse>> GetMeasurementsAsync();
     }
 }
