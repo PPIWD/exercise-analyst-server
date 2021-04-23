@@ -32,11 +32,7 @@ namespace API.Controllers
         public async Task<IActionResult> GetMeasurementsDev()
         {
             var response = await _measurementsDevService.GetMeasurementsAsync();
-            
-            if (response.HttpStatusCode == HttpStatusCode.OK)
-                return Ok(response);
-
-            return BadRequest(response.Errors);
+            return Ok(response);
         }
         
         [HttpGet("{measurementId}")]
