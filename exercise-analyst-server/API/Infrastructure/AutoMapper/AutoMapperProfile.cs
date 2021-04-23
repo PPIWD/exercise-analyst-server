@@ -84,9 +84,11 @@ namespace API.Infrastructure.AutoMapper
                     opt => opt
                         .MapFrom(mesDto => mesDto.SessionEntity.Id));
 
-            CreateMap<Measurement, MeasurementForGetMeasurementsCsvResponse>();
-            CreateMap<AccelerometerMeasurement, AccelerometerMeasurementForGetMeasurementsCsvResponse>();
-            CreateMap<GyroscopeMeasurement, GyroscopeMeasurementForGetMeasurementsCsvResponse>();
+            CreateMap<Measurement, MeasurementForGetMeasurementsResponse>();
+            
+            CreateMap<Measurement, GetMeasurementResponse>();
+            CreateMap<AccelerometerMeasurement, AccelerometerMeasurementForGetMeasurementsResponse>();
+            CreateMap<GyroscopeMeasurement, GyroscopeMeasurementForGetMeasurementsResponse>();
         }
 
 

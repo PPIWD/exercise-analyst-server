@@ -9,5 +9,6 @@ namespace API.Services.MeasurementsDev
     {
         Task<Response> CreateMeasurementAsync(CreateMeasurementDevRequest request);
         Task<Response<GetMeasurementsResponse>> GetMeasurementsAsync();
+        Task<Response<GetMeasurementResponse>> GetMeasurementAsync(int measurementId);
     }
 }

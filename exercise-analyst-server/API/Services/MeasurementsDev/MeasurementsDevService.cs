@@ -37,7 +37,7 @@ namespace API.Services.MeasurementsDev
         public async Task<Response<GetMeasurementsResponse>> GetMeasurementsAsync()
         {
             var measurements = await _context.Measurements
-                .ProjectTo<MeasurementForGetMeasurementsCsvResponse>(_mapper.ConfigurationProvider)
+                .ProjectTo<MeasurementForGetMeasurementsResponse>(_mapper.ConfigurationProvider)
                 .ToListAsync();
             
             var payload = new GetMeasurementsResponse
@@ -51,6 +51,32 @@ namespace API.Services.MeasurementsDev
                 Payload = payload
             };
             
+            return response;
+        }
+
+        public async Task<Response<GetMeasurementResponse>> GetMeasurementAsync(int measurementId)
+        {
+            var measurement = await _context.Measurements
+                .Include(m => m.AccelerometerMeasurements)
+                .Include(m => m.GyroscopeMeasurements)
+                .ProjectTo<GetMeasurementResponse>(_mapper.ConfigurationProvider)
+                .SingleOrDefaultAsync(m => m.Id == measurementId);
+
+            if (measurement == null)
+            {
+                return new Response<GetMeasurementResponse>
+                {
+                    HttpStatusCode = HttpStatusCode.NotFound,
+                    Errors = new[] {$"No measurement with id {measurementId} was found"}
+                };
+            }
+
+            var response = new Response<GetMeasurementResponse>
+            {
+                HttpStatusCode = HttpStatusCode.OK,
+                Payload = measurement
+            };
+
             return response;
         }
     }

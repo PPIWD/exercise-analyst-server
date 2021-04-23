@@ -10,7 +10,6 @@ namespace API.Persistence
     {
         public DataContext(DbContextOptions options) : base(options)
         {
-            Database.SetCommandTimeout(600);
         }
 
         public DbSet<Measurement> Measurements { get; set; }

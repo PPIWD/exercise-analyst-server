@@ -38,5 +38,16 @@ namespace API.Controllers
 
             return BadRequest(response.Errors);
         }
+        
+        [HttpGet("{measurementId}")]
+        public async Task<IActionResult> GetMeasurementDev([FromRoute] int measurementId)
+        {
+            var response = await _measurementsDevService.GetMeasurementAsync(measurementId);
+            
+            if (response.HttpStatusCode == HttpStatusCode.OK)
+                return Ok(response);
+
+            return NotFound(response.Errors);
+        }
     }
 }
