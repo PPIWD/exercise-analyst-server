@@ -1,10 +1,69 @@
 {
 	"info": {
-		"_postman_id": "30b18442-76e4-4fd2-a1bb-09bfb53cb31e",
+		"_postman_id": "512dde5e-bddd-4911-ac72-8528133cd649",
 		"name": "exercise-analyst-server",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test@email.com\",\r\n    \"password\": \"Pass123!\",\r\n    \"heightInCm\": 179,\r\n    \"age\": 25,\r\n    \"weightInKg\": 77.5,\r\n    \"gender\": \"male\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test@email.com\",\r\n    \"password\": \"Pass123!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
 		{
 			"name": "Create measurement dev",
 			"request": {
@@ -20,19 +79,76 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/measurements-dev",
-					"protocol": "https",
+					"raw": "{{baseUrl}}/measurements-dev",
 					"host": [
-						"localhost"
+						"{{baseUrl}}"
 					],
-					"port": "5001",
 					"path": [
-						"api",
 						"measurements-dev"
 					]
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Get all measurements",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/measurements-dev",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"measurements-dev"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get measurement",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/measurements-dev",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"measurements-dev"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://localhost:5001/api"
 		}
 	]
 }

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using API.Services.Common;
 
-namespace API.Services.Auth.Dtos
+namespace API.Services.Auth.Dtos.Requests
 {
     public class RegisterRequest
     {
