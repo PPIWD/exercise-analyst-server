@@ -1,5 +1,6 @@
 ﻿using API.Domain.Models;
 using API.Services.Auth.Dtos;
+using API.Services.Auth.Dtos.Responses;
 using API.Services.MeasurementsDev.Dtos.Requests;
 using API.Services.MeasurementsDev.Dtos.Responses;
 using AutoMapper;
