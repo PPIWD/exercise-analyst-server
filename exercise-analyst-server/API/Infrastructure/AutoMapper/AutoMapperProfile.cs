@@ -1,6 +1,8 @@
 ﻿using API.Domain.Models;
 using API.Services.Auth.Dtos;
+using API.Services.Auth.Dtos.Responses;
 using API.Services.MeasurementsDev.Dtos.Requests;
+using API.Services.MeasurementsDev.Dtos.Responses;
 using AutoMapper;
 
 namespace API.Infrastructure.AutoMapper
@@ -81,6 +83,12 @@ namespace API.Infrastructure.AutoMapper
                 .ForMember(mes => mes.IdFromMobile,
                     opt => opt
                         .MapFrom(mesDto => mesDto.SessionEntity.Id));
+
+            CreateMap<Measurement, MeasurementForGetMeasurementsResponse>();
+            
+            CreateMap<Measurement, GetMeasurementResponse>();
+            CreateMap<AccelerometerMeasurement, AccelerometerMeasurementForGetMeasurementsResponse>();
+            CreateMap<GyroscopeMeasurement, GyroscopeMeasurementForGetMeasurementsResponse>();
         }
 
 
