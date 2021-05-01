@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using API.Domain.Models;
 using API.Infrastructure.Jwt;
 using API.Services.Auth.Dtos;
+using API.Services.Auth.Dtos.Requests;
+using API.Services.Auth.Dtos.Responses;
 using API.Services.Common;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;

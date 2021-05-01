@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 using API.Services.MeasurementsDev;
 using API.Services.MeasurementsDev.Dtos.Requests;
@@ -27,6 +26,24 @@ namespace API.Controllers
                 return NoContent();
 
             return BadRequest(response.Errors);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetMeasurementsDev()
+        {
+            var response = await _measurementsDevService.GetMeasurementsAsync();
+            return Ok(response);
+        }
+        
+        [HttpGet("{measurementId}")]
+        public async Task<IActionResult> GetMeasurementDev([FromRoute] int measurementId)
+        {
+            var response = await _measurementsDevService.GetMeasurementAsync(measurementId);
+            
+            if (response.HttpStatusCode == HttpStatusCode.OK)
+                return Ok(response);
+
+            return NotFound(response.Errors);
         }
     }
 }
