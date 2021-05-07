@@ -18,74 +18,30 @@ namespace API.Infrastructure.AutoMapper
         private void MapsForMeasurementsDev()
         {
             CreateMap<AccelerometerMeasEntity, AccelerometerMeasurement>()
-                //IGNORE MeasurementId->MeasurementId
                 .ForMember(acc => acc.MeasurementId,
-                    opt => opt.Ignore())
-
-                //Vector.X->X
-                .ForMember(acc => acc.X,
-                    opt => opt
-                        .MapFrom(accDto => accDto.Vector.X))
-
-                //Vector.Y->Y
-                .ForMember(acc => acc.Y,
-                    opt => opt
-                        .MapFrom(accDto => accDto.Vector.Y))
-
-                //Vector.Z->Z
-                .ForMember(acc => acc.Z,
-                    opt => opt
-                        .MapFrom(accDto => accDto.Vector.Z));
-
+                    opt => opt.Ignore());
 
             CreateMap<GyroscopeMeasEntity, GyroscopeMeasurement>()
-                //IGNORE MeasurementId->MeasurementId
                 .ForMember(gyro => gyro.MeasurementId,
-                    opt => opt.Ignore())
-
-                //Vector.X->X
-                .ForMember(gyro => gyro.X,
-                    opt => opt
-                        .MapFrom(gyroDto => gyroDto.Vector.X))
-
-                //Vector.Y->Y
-                .ForMember(gyro => gyro.Y,
-                    opt => opt
-                        .MapFrom(gyroDto => gyroDto.Vector.Y))
-                //Vector.Z->Z
-                .ForMember(gyro => gyro.Z,
-                    opt => opt
-                        .MapFrom(gyroDto => gyroDto.Vector.Z));
-
-
+                    opt => opt.Ignore());
+                    
             CreateMap<CreateMeasurementDevRequest, Measurement>()
+                .ForMember(mes => mes.IdFromMobile,
+                    opt => opt
+                        .MapFrom(mesDto => mesDto.Id))
+                .ForMember(mes => mes.Id,
+                    opt => opt.Ignore())
                 //GyroscopeMeasEntites->GyroscopeMeasurements
                 .ForMember(mes => mes.GyroscopeMeasurements,
                     opt => opt
                         .MapFrom(mesDto => mesDto.GyroscopeMeasEntities))
-
                 //AccelerometerMeasEntities->AccelerometerMeasurements
                 .ForMember(mes => mes.AccelerometerMeasurements,
                     opt => opt
-                        .MapFrom(mesDto => mesDto.AccelerometerMeasEntities))
-
-                //Session.Activity->Activity
-                .ForMember(mes => mes.Activity,
-                    opt => opt
-                        .MapFrom(mesDto => mesDto.SessionEntity.Activity))
-
-                //Session.Repetitions->Repetitions
-                .ForMember(mes => mes.Repetitions,
-                    opt => opt
-                        .MapFrom(mesDto => mesDto.SessionEntity.Repetitions))
-
-                //Session.Id->IdFromMobile
-                .ForMember(mes => mes.IdFromMobile,
-                    opt => opt
-                        .MapFrom(mesDto => mesDto.SessionEntity.Id));
+                        .MapFrom(mesDto => mesDto.AccelerometerMeasEntities));
 
             CreateMap<Measurement, MeasurementForGetMeasurementsResponse>();
-            
+
             CreateMap<Measurement, GetMeasurementResponse>();
             CreateMap<AccelerometerMeasurement, AccelerometerMeasurementForGetMeasurementsResponse>();
             CreateMap<GyroscopeMeasurement, GyroscopeMeasurementForGetMeasurementsResponse>();
