@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    
+
     [Route("api/v{version:apiVersion}/measurements-dev")]
     [Route("api/measurements-dev")]
     [ApiController]
@@ -50,12 +50,12 @@ namespace API.Controllers
             var response = await _measurementsDevService.GetMeasurementsAsync();
             return Ok(response);
         }
-        
+
         [HttpGet("{measurementId}")]
         public async Task<IActionResult> GetMeasurementDev([FromRoute] int measurementId)
         {
             var response = await _measurementsDevService.GetMeasurementAsync(measurementId);
-            
+
             if (response.HttpStatusCode == HttpStatusCode.OK)
                 return Ok(response);
 

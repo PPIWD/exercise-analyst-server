@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -8,6 +9,8 @@ using API.Infrastructure.AutoMapper;
 using API.Infrastructure.Jwt;
 using API.Persistence;
 using API.Services.Auth;
+using API.Services.Exercises;
+using API.Services.Measurements;
 using API.Services.MeasurementsDev;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -54,6 +57,8 @@ namespace API
             services.AddTransient<IJwtGenerator, JwtGenerator>();
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IMeasurementsDevService, MeasurementsDevService>();
+            services.AddTransient<IExercisesService, ExercisesService>();
+            services.AddTransient<IMeasurementsService, MeasurementsService>();
 
 
             services.AddCors(options =>
@@ -127,6 +132,8 @@ namespace API
                         new List<string>()
                     }
                 });
+
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
 
             services.AddControllers();

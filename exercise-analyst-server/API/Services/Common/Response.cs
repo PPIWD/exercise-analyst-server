@@ -6,6 +6,16 @@ namespace API.Services.Common
 {
     public class Response<T>
     {
+        public Response()
+        {
+
+        }
+
+        public Response(HttpStatusCode httpStatusCode)
+        {
+            HttpStatusCode = httpStatusCode;
+        }
+
         [JsonIgnore]
         public HttpStatusCode HttpStatusCode { get; set; }
         public IEnumerable<string> Errors { get; set; }
@@ -14,6 +24,7 @@ namespace API.Services.Common
 
     public class Response
     {
+
         public Response(HttpStatusCode httpStatusCode)
         {
             HttpStatusCode = httpStatusCode;

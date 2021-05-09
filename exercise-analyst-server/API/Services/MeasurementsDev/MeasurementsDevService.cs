@@ -39,24 +39,24 @@ namespace API.Services.MeasurementsDev
                 Errors = new[] { "No data has been saved" }
             };
         }
-        
+
         public async Task<Response<GetMeasurementsResponse>> GetMeasurementsAsync()
         {
             var measurements = await _context.Measurements
                 .ProjectTo<MeasurementForGetMeasurementsResponse>(_mapper.ConfigurationProvider)
                 .ToListAsync();
-            
+
             var payload = new GetMeasurementsResponse
             {
                 Measurements = measurements
             };
-            
+
             var response = new Response<GetMeasurementsResponse>
             {
                 HttpStatusCode = HttpStatusCode.OK,
                 Payload = payload
             };
-            
+
             return response;
         }
 
