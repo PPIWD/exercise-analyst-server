@@ -56,14 +56,7 @@ namespace API
             services.AddTransient<IMeasurementsDevService, MeasurementsDevService>();
 
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.WithOrigins("http://localhost:3000")
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowCredentials());
-            });
+            services.AddCors();
 
             services.AddMvc(option => option.EnableEndpointRouting = false)
                 .AddJsonOptions(options =>
@@ -148,7 +141,6 @@ namespace API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors("CorsPolicy");
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -158,6 +150,12 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()); // allow credentials
 
             app.UseAuthentication();
             app.UseAuthorization();
