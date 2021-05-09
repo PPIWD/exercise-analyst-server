@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace API.Services.MeasurementsDev.Dtos.Requests
 {
@@ -27,5 +27,4 @@ namespace API.Services.MeasurementsDev.Dtos.Requests
         public double Y { get; set; }
         public double Z { get; set; }
     }
-
 }
