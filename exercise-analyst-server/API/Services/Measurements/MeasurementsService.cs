@@ -119,12 +119,8 @@ namespace API.Services.Measurements
 
         private static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
         {
-            if (unixTimeStamp.ToString().Length > 10)
-                unixTimeStamp = double.Parse(unixTimeStamp.ToString().Substring(0, 10));
-
-
             DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+            dtDateTime = dtDateTime.AddMilliseconds(unixTimeStamp).ToLocalTime();
             return dtDateTime;
         }
     }
