@@ -26,7 +26,7 @@ namespace API.Infrastructure.Jwt
         public async Task<string> CreateTokenAsync(ApplicationUser user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:SecretKey"]));
-            
+
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
@@ -34,10 +34,10 @@ namespace API.Infrastructure.Jwt
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim("userId", user.Id),
             };
-            
+
             var userClaims = await _userManager.GetClaimsAsync(user);
             claims.AddRange(userClaims);
-            
+
             var userRoles = await _userManager.GetRolesAsync(user);
             foreach (var userRole in userRoles)
             {
@@ -55,16 +55,16 @@ namespace API.Infrastructure.Jwt
                     claims.Add(roleClaim);
                 }
             }
-            
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_config["Jwt:TokenExpiry"])),
+                Expires = DateTime.UtcNow.AddDays(Convert.ToDouble(_config["Jwt:TokenExpiry"])),
                 SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512Signature),
                 Issuer = _config["Jwt:Issuer"],
                 Audience = _config["Jwt:Audience"]
             };
-            
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var securityToken = tokenHandler.CreateToken(tokenDescriptor);
 

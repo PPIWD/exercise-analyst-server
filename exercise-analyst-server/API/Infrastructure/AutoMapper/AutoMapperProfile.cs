@@ -1,8 +1,9 @@
 ﻿using API.Domain.Models;
-using API.Services.Auth.Dtos;
 using API.Services.Auth.Dtos.Responses;
+using API.Services.Exercises.Dtos.Responses;
 using API.Services.MeasurementsDev.Dtos.Requests;
 using API.Services.MeasurementsDev.Dtos.Responses;
+
 using AutoMapper;
 
 namespace API.Infrastructure.AutoMapper
@@ -13,6 +14,12 @@ namespace API.Infrastructure.AutoMapper
         {
             MapsForMeasurementsDev();
             MapsForAuth();
+            MapsForExercises();
+        }
+
+        private void MapsForExercises()
+        {
+            CreateMap<Exercise, ExerciseForGetExercises>();
         }
 
         private void MapsForMeasurementsDev()
@@ -24,7 +31,7 @@ namespace API.Infrastructure.AutoMapper
             CreateMap<GyroscopeMeasEntity, GyroscopeMeasurement>()
                 .ForMember(gyro => gyro.MeasurementId,
                     opt => opt.Ignore());
-                    
+
             CreateMap<CreateMeasurementDevRequest, Measurement>()
                 .ForMember(mes => mes.IdFromMobile,
                     opt => opt
