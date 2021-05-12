@@ -22,7 +22,7 @@ namespace API.Services.MeasurementsDev
             _mapper = mapper;
         }
 
-        public async Task<Response> CreateMeasurementAsync(CreateMeasurementDevRequest request)
+        public async Task<Response<int>> CreateMeasurementAsync(CreateMeasurementDevRequest request)
         {
             var measurement = _mapper.Map<Measurement>(request);
 
@@ -30,27 +30,33 @@ namespace API.Services.MeasurementsDev
             var result = await _context.SaveChangesAsync();
 
             if(result > 0)
-                return new Response(HttpStatusCode.NoContent);
-            return new Response(HttpStatusCode.BadRequest, new[] { "No data has been saved" });
+                return new Response<int>(){
+                    HttpStatusCode = HttpStatusCode.Created,
+                    Payload = measurement.Id
+                };
+            return new Response<int>(){
+                HttpStatusCode = HttpStatusCode.BadRequest,
+                Errors = new[] { "No data has been saved" }
+            };
         }
-        
+
         public async Task<Response<GetMeasurementsResponse>> GetMeasurementsAsync()
         {
             var measurements = await _context.Measurements
                 .ProjectTo<MeasurementForGetMeasurementsResponse>(_mapper.ConfigurationProvider)
                 .ToListAsync();
-            
+
             var payload = new GetMeasurementsResponse
             {
                 Measurements = measurements
             };
-            
+
             var response = new Response<GetMeasurementsResponse>
             {
                 HttpStatusCode = HttpStatusCode.OK,
                 Payload = payload
             };
-            
+
             return response;
         }
 

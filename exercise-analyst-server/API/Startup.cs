@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -8,6 +9,8 @@ using API.Infrastructure.AutoMapper;
 using API.Infrastructure.Jwt;
 using API.Persistence;
 using API.Services.Auth;
+using API.Services.Exercises;
+using API.Services.Measurements;
 using API.Services.MeasurementsDev;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -54,6 +57,8 @@ namespace API
             services.AddTransient<IJwtGenerator, JwtGenerator>();
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IMeasurementsDevService, MeasurementsDevService>();
+            services.AddTransient<IExercisesService, ExercisesService>();
+            services.AddTransient<IMeasurementsService, MeasurementsService>();
 
 
             services.AddCors();
@@ -120,9 +125,19 @@ namespace API
                         new List<string>()
                     }
                 });
+
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
 
             services.AddControllers();
+            services.AddApiVersioning(
+                options =>
+                {
+                    options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1,0);
+                    options.AssumeDefaultVersionWhenUnspecified = true;
+                    // reporting api versions will return the headers "api-supported-versions" and "api-deprecated-versions"
+                    options.ReportApiVersions = true;
+                } );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

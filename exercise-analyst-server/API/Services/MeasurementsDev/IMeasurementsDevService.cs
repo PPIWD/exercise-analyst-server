@@ -7,7 +7,7 @@ namespace API.Services.MeasurementsDev
 {
     public interface IMeasurementsDevService
     {
-        Task<Response> CreateMeasurementAsync(CreateMeasurementDevRequest request);
+        Task<Response<int>> CreateMeasurementAsync(CreateMeasurementDevRequest request);
         Task<Response<GetMeasurementsResponse>> GetMeasurementsAsync();
         Task<Response<GetMeasurementResponse>> GetMeasurementAsync(int measurementId);
     }

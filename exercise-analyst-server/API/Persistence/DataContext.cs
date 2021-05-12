@@ -15,6 +15,7 @@ namespace API.Persistence
         public DbSet<Measurement> Measurements { get; set; }
         public DbSet<AccelerometerMeasurement> AccelerometerMeasurements { get; set; }
         public DbSet<GyroscopeMeasurement> GyroscopeMeasurements { get; set; }
+        public DbSet<Exercise> Exercises { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
