@@ -58,7 +58,11 @@ namespace API
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IMeasurementsDevService, MeasurementsDevService>();
             services.AddTransient<IExercisesService, ExercisesService>();
-            services.AddTransient<IMeasurementsService, MeasurementsService>();
+            services.AddHttpClient<IMeasurementsService, MeasurementsService>(client =>
+            {
+                client.BaseAddress = new Uri(Configuration["ML_Url"]);
+                client.Timeout = new TimeSpan(0, 1, 0);
+            });
 
 
             services.AddCors(options =>

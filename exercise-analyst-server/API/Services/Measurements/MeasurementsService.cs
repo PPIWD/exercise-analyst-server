@@ -3,6 +3,7 @@ using API.Persistence;
 using API.Services.Common;
 using API.Services.Measurements.Dtos.Requests;
 using API.Domain.Utils;
+using API.Services.Measurements.Dtos_ml;
 
 using AutoMapper;
 
@@ -14,6 +15,8 @@ using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Net.Http;
+using System.Collections.Generic;
 
 namespace API.Services.Measurements
 {
@@ -22,12 +25,14 @@ namespace API.Services.Measurements
         private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly HttpClient _httpClient;
 
-        public MeasurementsService(DataContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public MeasurementsService(DataContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, HttpClient httpClient)
         {
             _context = context;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
+            _httpClient = httpClient;
         }
 
         public async Task<Response> CreateMeasurementAsync(CreateMeasurementRequest request)
@@ -44,6 +49,14 @@ namespace API.Services.Measurements
             if (user == null)
                 return new Response(HttpStatusCode.NotFound, new[] { "Nie znaleziono użytkownika w bazie" });
 
+            var acc = Newtonsoft.Json.JsonConvert.SerializeObject(new []{new Accelerometer()});//Newtonsoft.Json.JsonConvert.SerializeObject(request.AccelerometerMeasEntities.Take(1));
+            var gyro = Newtonsoft.Json.JsonConvert.SerializeObject(new []{new Gyroscope()});//Newtonsoft.Json.JsonConvert.SerializeObject(request.GyroscopeMeasEntities.Take(1));
+            var data = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("accelerometerMeasEntities", acc),
+                new KeyValuePair<string, string>("gyroscopeMeasEntities", gyro)
+            });
+            var response = await _httpClient.PostAsync(_httpClient.BaseAddress.ToString(), data);
             //TODO DODAĆ - TUTAJ POWINIEN ODBYĆ SIĘ STRZAŁ I POWINNIŚMY DOSTAĆ PREDICTION OD ML ALE JESZCZE TEGO NIE MA
             //try
             //{
@@ -60,8 +73,8 @@ namespace API.Services.Measurements
             //}
 
             //TODO USUNĄĆ - zapisujemy i zwracamy jakieś losowe dane dopóki nie mamy danych z ML
-            string activity = Activities.ActivitesList[new Random().Next(Activities.ActivitesList.Count)];
-            int repetitions = new Random().Next(10, 30);
+            string activity = await response.Content.ReadAsStringAsync();
+            int repetitions = 0;
 
             var exercise = new Exercise()
             {
@@ -94,7 +107,7 @@ namespace API.Services.Measurements
                 return UnixTimeStampToDateTime(max);
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return DateTime.UtcNow;
             }
@@ -111,7 +124,7 @@ namespace API.Services.Measurements
 
                 return UnixTimeStampToDateTime(min);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return DateTime.UtcNow;
             }
