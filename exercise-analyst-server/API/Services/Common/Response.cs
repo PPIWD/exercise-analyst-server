@@ -11,6 +11,12 @@ namespace API.Services.Common
 
         }
 
+        public Response(HttpStatusCode httpStatusCode, IEnumerable<string> errors)
+        {
+            HttpStatusCode = httpStatusCode;
+            Errors = errors;
+        }
+
         public Response(HttpStatusCode httpStatusCode)
         {
             HttpStatusCode = httpStatusCode;

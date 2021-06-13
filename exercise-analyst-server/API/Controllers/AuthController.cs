@@ -19,7 +19,7 @@ namespace API.Controllers
         {
             _authService = authService;
         }
-        
+
         [HttpPost("login")]
         [Produces(typeof(Response<LoginResponse>))]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
@@ -31,7 +31,7 @@ namespace API.Controllers
 
             return Ok(response);
         }
-        
+
         [HttpPost("register")]
         [Produces(typeof(Response<RegisterResponse>))]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)

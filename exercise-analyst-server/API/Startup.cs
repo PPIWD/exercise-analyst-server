@@ -7,6 +7,7 @@ using System.Text.Json.Serialization;
 using API.Domain.Models;
 using API.Infrastructure.AutoMapper;
 using API.Infrastructure.Jwt;
+using API.Infrastructure.MachineLearning;
 using API.Persistence;
 using API.Services.Auth;
 using API.Services.Exercises;
@@ -58,7 +59,8 @@ namespace API
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IMeasurementsDevService, MeasurementsDevService>();
             services.AddTransient<IExercisesService, ExercisesService>();
-            services.AddHttpClient<IMeasurementsService, MeasurementsService>(client =>
+            services.AddTransient<IMeasurementsService, MeasurementsService>();
+            services.AddHttpClient<IMachineLearning, MachineLearning>(client =>
             {
                 client.BaseAddress = new Uri(Configuration["ML_Url"]);
                 client.Timeout = new TimeSpan(0, 1, 0);

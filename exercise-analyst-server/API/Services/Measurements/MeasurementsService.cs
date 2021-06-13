@@ -17,6 +17,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Collections.Generic;
+using API.Infrastructure.MachineLearning;
 
 namespace API.Services.Measurements
 {
@@ -25,14 +26,14 @@ namespace API.Services.Measurements
         private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly HttpClient _httpClient;
+        private readonly IMachineLearning _machineLearning;
 
-        public MeasurementsService(DataContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, HttpClient httpClient)
+        public MeasurementsService(DataContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IMachineLearning machineLearning)
         {
             _context = context;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
-            _httpClient = httpClient;
+            _machineLearning = machineLearning;
         }
 
         public async Task<Response> CreateMeasurementAsync(CreateMeasurementRequest request)
@@ -48,24 +49,15 @@ namespace API.Services.Measurements
 
             if (user == null)
                 return new Response(HttpStatusCode.NotFound, new[] { "Nie znaleziono użytkownika w bazie" });
-            
-            HttpResponseMessage responseMessage;
-            try{
-            var acc = Newtonsoft.Json.JsonConvert.SerializeObject(request.AccelerometerMeasEntities.Select(x => (MLAccelerometer)x));//Newtonsoft.Json.JsonConvert.SerializeObject(request.AccelerometerMeasEntities.Take(1));
-            var gyro = Newtonsoft.Json.JsonConvert.SerializeObject(request.GyroscopeMeasEntities.Select(x => (MLGyroscope)x));//Newtonsoft.Json.JsonConvert.SerializeObject(request.GyroscopeMeasEntities.Take(1));
-            var data = new FormUrlEncodedContent(new[]
-            {
-                new KeyValuePair<string, string>("accelerometerMeasEntities", acc),
-                new KeyValuePair<string, string>("gyroscopeMeasEntities", gyro)
-            });
-            responseMessage = await _httpClient.PostAsync(_httpClient.BaseAddress.ToString(), data);
-            }
-            catch(Exception){
-                return new Response(HttpStatusCode.NotFound, new[] { "Błąd Komunikacji z serwerem ML" });
-            }
-            string activity = await responseMessage.Content.ReadAsStringAsync();
-            int repetitions = 0;
 
+
+            var predictionResponse = await _machineLearning.Predict(request);
+
+            if(predictionResponse.HttpStatusCode == HttpStatusCode.NotFound)
+                return new Response(HttpStatusCode.NotFound, new[] { "Błąd Komunikacji z serwerem ML" });
+
+            var activity = predictionResponse.Payload.Item1;
+            var repetitions = predictionResponse.Payload.Item2;
 
             var exercise = new Exercise()
             {
