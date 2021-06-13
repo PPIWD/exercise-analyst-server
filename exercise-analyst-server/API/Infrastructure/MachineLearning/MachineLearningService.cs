@@ -12,14 +12,12 @@ using API.Services.Measurements.Dtos.Requests;
 
 namespace API.Infrastructure.MachineLearning
 {
-    public class MachineLearning: IMachineLearning
+    public class MachineLearningService : IMachineLearningService
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly HttpClient _httpClient;
 
-        public MachineLearning(IHttpContextAccessor httpContextAccessor, HttpClient httpClient)
+        public MachineLearningService(HttpClient httpClient)
         {
-            _httpContextAccessor = httpContextAccessor;
             _httpClient = httpClient;
         }
 
@@ -28,18 +26,18 @@ namespace API.Infrastructure.MachineLearning
             HttpResponseMessage responseMessage;
             try
             {
-                var acc = Newtonsoft.Json.JsonConvert.SerializeObject(request.AccelerometerMeasEntities.Select(x => (MLAccelerometer)x));//Newtonsoft.Json.JsonConvert.SerializeObject(request.AccelerometerMeasEntities.Take(1));
-                var gyro = Newtonsoft.Json.JsonConvert.SerializeObject(request.GyroscopeMeasEntities.Select(x => (MLGyroscope)x));//Newtonsoft.Json.JsonConvert.SerializeObject(request.GyroscopeMeasEntities.Take(1));
+                var acc = Newtonsoft.Json.JsonConvert.SerializeObject(request.AccelerometerMeasEntities.Select(x => (MLAccelerometer)x));
+                var gyro = Newtonsoft.Json.JsonConvert.SerializeObject(request.GyroscopeMeasEntities.Select(x => (MLGyroscope)x));
                 var data = new FormUrlEncodedContent(new[]
                 {
-                new KeyValuePair<string, string>("accelerometerMeasEntities", acc),
-new KeyValuePair<string, string>("gyroscopeMeasEntities", gyro)
-});
+                    new KeyValuePair<string, string>("accelerometerMeasEntities", acc),
+                    new KeyValuePair<string, string>("gyroscopeMeasEntities", gyro)
+                });
                 responseMessage = await _httpClient.PostAsync(_httpClient.BaseAddress.ToString(), data);
             }
             catch (Exception)
             {
-                return new Response<(string, int)>(HttpStatusCode.NotFound, new[] { "Błąd Komunikacji z serwerem ML" });
+                return new Response<(string, int)>(HttpStatusCode.NotFound, new[] { "Communication error with ML server" });
             }
             string activity = await responseMessage.Content.ReadAsStringAsync();
             int repetitions = 0;

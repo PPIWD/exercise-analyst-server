@@ -26,14 +26,14 @@ namespace API.Services.Measurements
         private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IMachineLearning _machineLearning;
+        private readonly IMachineLearningService _machineLearningService;
 
-        public MeasurementsService(DataContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IMachineLearning machineLearning)
+        public MeasurementsService(DataContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IMachineLearningService machineLearningService)
         {
             _context = context;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
-            _machineLearning = machineLearning;
+            _machineLearningService = machineLearningService;
         }
 
         public async Task<Response> CreateMeasurementAsync(CreateMeasurementRequest request)
@@ -48,13 +48,13 @@ namespace API.Services.Measurements
                 user = await _context.Users.FirstOrDefaultAsync(x => string.Equals(x.UserName.ToLower(), userName.ToLower()));
 
             if (user == null)
-                return new Response(HttpStatusCode.NotFound, new[] { "Nie znaleziono użytkownika w bazie" });
+                return new Response(HttpStatusCode.NotFound, new[] { "No user found in database" });
 
 
-            var predictionResponse = await _machineLearning.Predict(request);
+            var predictionResponse = await _machineLearningService.Predict(request);
 
             if(predictionResponse.HttpStatusCode == HttpStatusCode.NotFound)
-                return new Response(HttpStatusCode.NotFound, new[] { "Błąd Komunikacji z serwerem ML" });
+                return new Response(HttpStatusCode.NotFound, new[] { "Communication error with ML server" });
 
             var activity = predictionResponse.Payload.Item1;
             var repetitions = predictionResponse.Payload.Item2;
@@ -75,7 +75,7 @@ namespace API.Services.Measurements
             if (result > 0)
                 return new Response(HttpStatusCode.Created);
 
-           return new Response(HttpStatusCode.NotFound, new[] { "Błąd zapisu w bazie danych" });
+           return new Response(HttpStatusCode.NotFound, new[] { "Database entry error" });
         }
 
         private DateTime GetDateTimeEnd(CreateMeasurementRequest request)

@@ -60,7 +60,7 @@ namespace API
             services.AddTransient<IMeasurementsDevService, MeasurementsDevService>();
             services.AddTransient<IExercisesService, ExercisesService>();
             services.AddTransient<IMeasurementsService, MeasurementsService>();
-            services.AddHttpClient<IMachineLearning, MachineLearning>(client =>
+            services.AddHttpClient<IMachineLearningService, MachineLearningService>(client =>
             {
                 client.BaseAddress = new Uri(Configuration["ML_Url"]);
                 client.Timeout = new TimeSpan(0, 1, 0);

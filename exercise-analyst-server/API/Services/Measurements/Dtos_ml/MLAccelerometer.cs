@@ -11,7 +11,8 @@ public class MLAccelerometer
         public int measurementId { get; set; } = 1;
 
         public static explicit operator MLAccelerometer(AccelerometerMeasEntityForCreateMeasurement acc){
-            return new MLAccelerometer(){
+            return new MLAccelerometer()
+            {
                 timestampUtc = acc.TimestampUtc,
                 x = acc.X,
                 y = acc.Y,
