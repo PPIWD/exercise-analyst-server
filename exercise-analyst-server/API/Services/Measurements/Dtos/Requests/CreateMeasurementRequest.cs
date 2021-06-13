@@ -4,8 +4,8 @@ namespace API.Services.Measurements.Dtos.Requests
 {
     public class CreateMeasurementRequest
     {
-        public ICollection<GyroscopeMeasEntityForCreateMeasurement> AccelerometerMeasEntities { get; set; }
-        public ICollection<AccelerometerMeasEntityForCreateMeasurement> GyroscopeMeasEntities { get; set; }
+        public ICollection<AccelerometerMeasEntityForCreateMeasurement> AccelerometerMeasEntities { get; set; }
+        public ICollection<GyroscopeMeasEntityForCreateMeasurement> GyroscopeMeasEntities { get; set; }
     }
 
 
